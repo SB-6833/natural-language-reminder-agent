@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReminderEvaluationCase",
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^C[0-9]{2,}$"
+    },
+    "category": {
+      "enum": [
+        "normal",
+        "boundary",
+        "ambiguous",
+        "missing_information",
+        "malformed",
+        "adversarial"
+      ]
+    },
+    "input": {
+      "$ref": "reminder-request.schema.json"
+    },
+    "expected": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "enum": [
+            "action",
+            "clarification",
+            "rejected"
+          ]
+        },
+        "intent": {
+          "enum": [
+            "create",
+            "reschedule",
+            "snooze",
+            "none"
+          ]
+        },
+        "task_meaning": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_reminder_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "time": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "timezone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "clarification_topic": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "semantic_reference": {
+          "type": "string",
+          "minLength": 1
+        },
+        "critical_safety_case": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "outcome",
+        "intent",
+        "task_meaning",
+        "target_reminder_id",
+        "date",
+        "time",
+        "timezone",
+        "clarification_topic",
+        "semantic_reference",
+        "critical_safety_case"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "case_id",
+    "category",
+    "input",
+    "expected"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,26 @@
+﻿# Python virtual environments
+.venv/
+.venv313/
+venv/
+env/
+
+# Python generated files
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Build outputs
+build/
+dist/
+
+# Secrets and environment files
+.env
+.env.*
+!.env.example
+
+# Local editor and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db

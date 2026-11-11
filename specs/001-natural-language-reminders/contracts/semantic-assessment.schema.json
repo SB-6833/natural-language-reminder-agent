@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SemanticAssessment",
+  "type": "object",
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluator_method": {
+      "enum": [
+        "rubric_based",
+        "llm_judge"
+      ]
+    },
+    "scores": {
+      "type": "object",
+      "properties": {
+        "intent": {
+          "$ref": "#/$defs/score"
+        },
+        "task_target_identification": {
+          "$ref": "#/$defs/score"
+        },
+        "schedule_interpretation": {
+          "$ref": "#/$defs/score"
+        },
+        "clarification_rejection_correctness": {
+          "$ref": "#/$defs/score"
+        },
+        "unsupported_assumptions": {
+          "$ref": "#/$defs/score"
+        }
+      },
+      "required": [
+        "intent",
+        "task_target_identification",
+        "schedule_interpretation",
+        "clarification_rejection_correctness",
+        "unsupported_assumptions"
+      ],
+      "additionalProperties": false
+    },
+    "reasons": {
+      "type": "object",
+      "properties": {
+        "intent": {
+          "$ref": "#/$defs/reason"
+        },
+        "task_target_identification": {
+          "$ref": "#/$defs/reason"
+        },
+        "schedule_interpretation": {
+          "$ref": "#/$defs/reason"
+        },
+        "clarification_rejection_correctness": {
+          "$ref": "#/$defs/reason"
+        },
+        "unsupported_assumptions": {
+          "$ref": "#/$defs/reason"
+        }
+      },
+      "required": [
+        "intent",
+        "task_target_identification",
+        "schedule_interpretation",
+        "clarification_rejection_correctness",
+        "unsupported_assumptions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "case_id",
+    "evaluator_method",
+    "scores",
+    "reasons"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

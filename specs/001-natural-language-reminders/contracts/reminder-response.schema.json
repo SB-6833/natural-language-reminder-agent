@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReminderResponse",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/create_response"
+    },
+    {
+      "$ref": "#/$defs/reschedule_response"
+    },
+    {
+      "$ref": "#/$defs/snooze_response"
+    },
+    {
+      "$ref": "#/$defs/clarification_response"
+    },
+    {
+      "$ref": "#/$defs/rejection_response"
+    }
+  ],
+  "$defs": {
+    "timezone": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "create_action": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "create"
+        },
+        "task": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "time": {
+          "type": "string",
+          "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "timezone": {
+          "$ref": "#/$defs/timezone"
+        }
+      },
+      "required": [
+        "kind",
+        "task",
+        "date",
+        "time",
+        "timezone"
+      ],
+      "additionalProperties": false
+    },
+    "update_action_properties": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "reschedule",
+            "snooze"
+          ]
+        },
+        "target_reminder_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "time": {
+          "type": "string",
+          "pattern": "^(?:[01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "timezone": {
+          "$ref": "#/$defs/timezone"
+        }
+      },
+      "required": [
+        "kind",
+        "target_reminder_id",
+        "task",
+        "date",
+        "time",
+        "timezone"
+      ],
+      "additionalProperties": false
+    },
+    "create_response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "action"
+        },
+        "action": {
+          "$ref": "#/$defs/create_action"
+        }
+      },
+      "required": [
+        "status",
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "reschedule_response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "action"
+        },
+        "action": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/update_action_properties"
+            },
+            {
+              "properties": {
+                "kind": {
+                  "const": "reschedule"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "snooze_response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "action"
+        },
+        "action": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/update_action_properties"
+            },
+            {
+              "properties": {
+                "kind": {
+                  "const": "snooze"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "clarification_response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "clarification"
+        },
+        "action": {
+          "type": "null"
+        },
+        "questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "status",
+        "action",
+        "questions"
+      ],
+      "additionalProperties": false
+    },
+    "rejection_response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "rejected"
+        },
+        "action": {
+          "type": "null"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "action",
+        "reason"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
